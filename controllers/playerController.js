@@ -3,8 +3,48 @@ const db = require("../models");
 const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 
 const Players = db.players;
+// this is player dasboard API
+const getPlayerDashboard = async (req, res) => {
+  const playerdashbord = await players.findAll();
+  res.json({ PlayerData: playerdashbord });
 
-const getPlayer = async () => {};
+  // res.send(dasboardPlayer);
+};
+// console.log(Players.dasboardPlayer);
+
+// this is club Table API
+const getClubDashboard = async (req, res) => {
+  console.log("INSIDE API");
+  const dasboardPlayer = await players.findAll(req.body.clubData);
+  res.send(dasboardPlayer);
+};
+// console.log(Players.dasboardClub);
+
+// this is regster player API
+
+const registerPlayer = async (req, res) => {
+  // console.log(req.body);
+  const newPlayer = Players.findAll(req.body.formData);
+  // const saved = await newPlayer.save();
+  res.send(saved);
+  // console.log(req.body);
+};
+
+// this is ClubregisterPlayer API
+const getClubregisterPlayer = async (req, res) => {
+  console.log(req.body);
+  const newPlayer = players.findAll(req.body.clubData);
+  // const saved = await newPlayer.save();
+  res.send(saved);
+};
+
+// this is club table API
+const getClubtable = async (req, res) => {
+  console.log(req.body);
+  const clubtable = Players.findAll(req.body.formData);
+  // const saved = await clubtable.save();
+  res.send(saved);
+};
 
 const getAllPlayers = async () => {};
 
@@ -70,7 +110,7 @@ const getFindplayer = async (req, res) => {
   }
 };
 
-console.log(Players.avail_day);
+// console.log(Players.avail_day);
 
 // find players data from choseing sport
 const getFindsport = async (req, res) => {
@@ -83,7 +123,7 @@ const getFindsport = async (req, res) => {
   }
 };
 
-console.log(Players.sport);
+// console.log(Players.sport);
 // find by location
 
 const getFindbyLocation = async (req, res) => {
@@ -98,7 +138,7 @@ const getFindbyLocation = async (req, res) => {
   }
 };
 
-console.log(Players.sport);
+// console.log(Players.sport);
 
 // find players select by time frpm
 const getFindbyTimefrom = async (req, res) => {
@@ -111,14 +151,18 @@ const getFindbyTimefrom = async (req, res) => {
   }
 };
 
-console.log(Players.sport);
+// console.log(Players.sport);
 
 module.exports = {
-  getPlayer,
+  registerPlayer,
   getAllPlayers,
   getFilteredPlayer,
   getFindplayer,
   getFindsport,
   getFindbyLocation,
   getFindbyTimefrom,
+  getClubregisterPlayer,
+  getClubtable,
+  getPlayerDashboard,
+  getClubDashboard,
 };
