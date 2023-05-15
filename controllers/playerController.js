@@ -11,18 +11,48 @@ const getAllPlayers = async () => {};
 // find all data from databas
 
 const getFilteredPlayer = async (req, res) => {
+  console.log(req.body);
+  let queryArray = [];
+
+  if (req.body.sport) {
+    queryArray.push({ sport: { [Op.like]: `%${req.body.sport}%` } });
+  }
+  if (req.body.day) {
+    queryArray.push({ avail_day: { [Op.like]: `%${req.body.day}%` } });
+  }
+
   const filterplayers = await Players.findAll({
-    order: [["id", "DESC"]],
+    where: {
+      [Op.and]: queryArray,
+    },
   });
-  console.log("All Players:", JSON.stringify(filterplayers, null, 2));
   if (filterplayers) {
-    res.json({ status: "success", players: filterplayers });
+    if (
+      !req.body.selectedLocation ||
+      !req.body.selectedLocation.lat ||
+      !req.body.selectedLocation.lng
+    ) {
+      res.json({ status: "Error", error: "Long and Lat are required" });
+      return;
+    }
+    locationPlayers = [];
+    locationLat = req.body.selectedLocation.lat;
+    locationLng = req.body.selectedLocation.lng;
+    filterplayers.forEach((player) => {
+      console.log(parseFloat(player.lat));
+      if (
+        parseFloat(player.lat) > locationLat - 0.5 &&
+        parseFloat(player.lat) < locationLat + 0.5
+      )
+        locationPlayers.push(player);
+    });
+    res.json({ status: "success", filteredPlayer: locationPlayers });
   }
 };
 
 // find players data from chosing day
 const getFindplayer = async (req, res) => {
-  const fPlayers = await Players.findAll();
+  const fPlayers = await Players.findAll({});
   console.log("All Players:", JSON.stringify(fPlayers, null, 2));
   if (fPlayers) {
     locationPlayers = [];
