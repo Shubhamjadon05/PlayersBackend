@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       lng: {
         type: DataTypes.STRING,
       },
+
       sport: {
         type: DataTypes.STRING,
       },

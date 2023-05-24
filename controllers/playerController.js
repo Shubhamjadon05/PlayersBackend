@@ -3,39 +3,66 @@ const db = require("../models");
 const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 
 const Players = db.players;
-// this is player dasboard API
-const getPlayerDashboard = async (req, res) => {
-  const playerdashbord = await players.findAll();
-  res.json({ PlayerData: playerdashbord });
 
-  // res.send(dasboardPlayer);
+const MarkerTable = async (req, res) => {
+  // const playerId = req.params.id;
+  const playerData = await players.findAll(req.body.MarkerData);
+  // Send the retrieved data in the response
+  res.status(200).json(playerData);
 };
-// console.log(Players.dasboardPlayer);
 
-// this is club Table API
+// this is player dasboard API
 const getClubDashboard = async (req, res) => {
   console.log("INSIDE API");
-  const dasboardPlayer = await players.findAll(req.body.clubData);
-  res.send(dasboardPlayer);
+  const dashboardPlayers = await players.findAll(req.body.clubData); // retrieve data from the database
+  console.log(dashboardPlayers); // log the retrieved data to the console
+  res.status(200).json(dashboardPlayers); // send the retrieved data in the response
 };
-// console.log(Players.dasboardClub);
 
-// this is regster player API
+// this is club Table API
+const getPlayrDashboard = async (req, res) => {
+  console.log("INSIDE API");
+  const getPlayrDashboard = await players.findAll(req.body.clubData); // retrieve data from the database
+  console.log(getPlayrDashboard); // log the retrieved data to the console
+  res.status(200).json(getPlayrDashboard); // send the retrieved data in the response
+};
+
+// this is demo
 
 const registerPlayer = async (req, res) => {
-  // console.log(req.body);
-  const newPlayer = Players.findAll(req.body.formData);
-  // const saved = await newPlayer.save();
-  res.send(saved);
-  // console.log(req.body);
+  console.log(req.body);
+  const playerdata = req.body.formData;
+  const playerinputs = req.body.inputs;
+  playerdata.address = playerinputs.address.formatted_address;
+  playerdata.lat = playerinputs.selectedLocation.lat;
+  playerdata.lng = playerinputs.selectedLocation.lng;
+
+  try {
+    const newPlayer = await Players.create(playerdata);
+    console.log(playerdata);
+    res.status(201).json(newPlayer);
+  } catch (error) {
+    console.error("Error creating player:", error);
+    res.status(500).json({ message: "Error creating player" });
+  }
 };
 
 // this is ClubregisterPlayer API
 const getClubregisterPlayer = async (req, res) => {
   console.log(req.body);
-  const newPlayer = players.findAll(req.body.clubData);
-  // const saved = await newPlayer.save();
-  res.send(saved);
+  const Clubdata = req.body.clubData;
+  const Clubinputs = req.body.inputs;
+  Clubdata.address = Clubinputs.address.formatted_address;
+  Clubdata.lat = Clubinputs.selectedLocation.lat;
+  Clubdata.lng = Clubinputs.selectedLocation.lng;
+  try {
+    const newclubPlayer = await Players.create(Clubdata);
+    console.log("Player created:", Clubdata);
+    res.status(201).json(newclubPlayer);
+  } catch (error) {
+    console.error("Error creating player:", error);
+    res.status(500).json({ message: "Error creating player" });
+  }
 };
 
 // this is club table API
@@ -48,7 +75,19 @@ const getClubtable = async (req, res) => {
 
 const getAllPlayers = async () => {};
 
-// find all data from databas
+// find all data from databa
+// get register player API
+// const getformPlayer = async (req, res) => {
+//   console.log(req.body);
+//   let queryArray = [];
+
+//   if (req.body.lat) {
+//     queryArray.push({ lng: { [Op.like]: `%${req.body.lat}%` } });
+//   }
+//   if (req.body.lng) {
+//     queryArray.push({ lng: { [Op.like]: `%${req.body.lng}%` } });
+//   }
+// };
 
 const getFilteredPlayer = async (req, res) => {
   console.log(req.body);
@@ -163,6 +202,8 @@ module.exports = {
   getFindbyTimefrom,
   getClubregisterPlayer,
   getClubtable,
-  getPlayerDashboard,
+  getPlayrDashboard,
   getClubDashboard,
+  MarkerTable,
+  // getformPlayer,
 };
