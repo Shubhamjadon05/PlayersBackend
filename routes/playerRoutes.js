@@ -12,7 +12,7 @@ const {
   getClubtable,
   getPlayrDashboard,
   getClubDashboard,
-  MarkerTable,
+  // MarkerTable,
   // getformPlayer,
 } = require("../controllers/playerController");
 const router = express.Router();
@@ -25,10 +25,10 @@ router.post("/getFindsport", getFindsport);
 router.post("/getFindbyLocation", getFindbyLocation);
 router.post("/getFindbyTimefrom", getFindbyTimefrom);
 router.post("/getClubtable", getClubtable);
-router.get("/getPlayrDashboard", getPlayrDashboard);
+router.get("/getPlayrDashboard/:id", getPlayrDashboard);
 router.get("/getClubtable", getClubtable);
 router.get("/getClubDashboard", getClubDashboard);
-router.get("/MarkerTable", MarkerTable);
+// router.get("/MarkerTable", MarkerTable);
 // router.post("/getformPlayer", getformPlayer);
 
 module.exports = router;

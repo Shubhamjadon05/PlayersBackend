@@ -22,7 +22,11 @@ const getClubDashboard = async (req, res) => {
 // this is club Table API
 const getPlayrDashboard = async (req, res) => {
   console.log("INSIDE API");
-  const getPlayrDashboard = await players.findAll(req.body.clubData); // retrieve data from the database
+  let id = req.params.id;
+  if (!id) res.status(200).json([]);
+  const getPlayrDashboard = await players.findAll({
+    where: { id: id },
+  }); // retrieve data from the database
   console.log(getPlayrDashboard); // log the retrieved data to the console
   res.status(200).json(getPlayrDashboard); // send the retrieved data in the response
 };
@@ -33,9 +37,13 @@ const registerPlayer = async (req, res) => {
   console.log(req.body);
   const playerdata = req.body.formData;
   const playerinputs = req.body.inputs;
-  playerdata.address = playerinputs.address.formatted_address;
-  playerdata.lat = playerinputs.selectedLocation.lat;
-  playerdata.lng = playerinputs.selectedLocation.lng;
+  try {
+    playerdata.address = playerinputs.address.formatted_address;
+    playerdata.lat = playerinputs.selectedLocation.lat;
+    playerdata.lng = playerinputs.selectedLocation.lng;
+  } catch (error) {
+    console.log("Error while getting address lat and lng");
+  }
 
   try {
     const newPlayer = await Players.create(playerdata);
@@ -50,14 +58,14 @@ const registerPlayer = async (req, res) => {
 // this is ClubregisterPlayer API
 const getClubregisterPlayer = async (req, res) => {
   console.log(req.body);
-  const Clubdata = req.body.clubData;
-  const Clubinputs = req.body.inputs;
-  Clubdata.address = Clubinputs.address.formatted_address;
-  Clubdata.lat = Clubinputs.selectedLocation.lat;
-  Clubdata.lng = Clubinputs.selectedLocation.lng;
+  const clubdata = req.body.clubData;
+  const playerinputs = req.body.inputs;
+  clubdata.address = playerinputs.address.formatted_address;
+  clubdata.lat = playerinputs.selectedLocation.lat;
+  clubdata.lng = playerinputs.selectedLocation.lng;
   try {
-    const newclubPlayer = await Players.create(Clubdata);
-    console.log("Player created:", Clubdata);
+    const newclubPlayer = await Players.create(req.body.clubData);
+    console.log("Player created:", newclubPlayer);
     res.status(201).json(newclubPlayer);
   } catch (error) {
     console.error("Error creating player:", error);
