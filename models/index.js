@@ -21,11 +21,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// db.users = require("./UserModel")(sequelize, DataTypes);
+
+db.create_post = require("./create_post")(sequelize, DataTypes);
 // db.Output = require("./OutPutModel")(sequelize, DataTypes);
-db.users = require("./UserModel")(sequelize, DataTypes);
-db.clubs = require("./ClubsModel")(sequelize, DataTypes);
-db.players = require("./PlayerModel")(sequelize, DataTypes);
+db.users = require("./AdminModel")(sequelize, DataTypes);
+// db.clubs = require("./ClubsModel")(sequelize, DataTypes);
+// db.players = require("./PlayerModel")(sequelize, DataTypes);
 db.sequelize.sync().then(() => {
 	console.log("yes sync");
 });

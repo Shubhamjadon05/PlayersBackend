@@ -6,5 +6,6 @@ module.exports = Object.freeze({
   USER_DB: process.env.USER_DB,
   PASSWORD_DB: process.env.PASSWORD_DB,
   DB: process.env.DB,
-  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET, 
+
 });

@@ -46,7 +46,8 @@ const createHash = async (myPlaintextPassword) => {
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "/Nodejs/helpersin_backend/uploads/workers/profile");
+		cb(null, "uploads");
+		
 	},
 	filename: function (req, file, cb) {
 		const uniqueSuffix =
@@ -55,7 +56,7 @@ const storage = multer.diskStorage({
 	},
 });
 
-const upload = multer({ storage: storage }).single("profile_pic");
+const upload = multer({ storage: storage }).single("image");
 
 module.exports = {
 	createToken,
